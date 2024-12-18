@@ -1,17 +1,22 @@
 import { Routes, Route } from "react-router";
-import './App.css';
-import LoginPage from './pages/Auth/Login';
-import IncomeReportPage from './pages/IncomeReport/IncomeReport';
-import InstructorDetailPage from './pages/Instructor/InstructorDetail';
-import ListInstructorPage from './pages/Instructor/ListInsructor';
-
+import "./App.css";
+import LoginPage from "./pages/Auth/Login";
+import IncomeReportPage from "./pages/IncomeReport/IncomeReport";
+import InstructorDetailPage from "./pages/Instructor/InstructorDetail";
+import ListInstructorPage from "./pages/Instructor/ListInsructor";
+import DefaultLayout from "./layouts/DefaultLayout";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="income-report" element={<IncomeReportPage />} />
-      <Route path="instructors" element={<ListInstructorPage />} />
-      <Route path="instructors/:instructorId" element={<InstructorDetailPage />} />
+      <Route element={<DefaultLayout />}>
+        <Route index element={<LoginPage />} />
+        <Route path="income-report" element={<IncomeReportPage />} />
+        <Route path="instructors" element={<ListInstructorPage />} />
+        <Route
+          path="instructors/:instructorId"
+          element={<InstructorDetailPage />}
+        />
+      </Route>
     </Routes>
   );
 }

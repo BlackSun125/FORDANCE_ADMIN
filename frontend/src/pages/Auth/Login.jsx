@@ -4,7 +4,7 @@ export default function LoginPage()
 {
  return (
         <div>
-        Login Page
+        <button className="btn"> Login Button</button>
         </div>
     );
 }
