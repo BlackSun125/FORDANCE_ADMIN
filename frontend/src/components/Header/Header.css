@@ -1,0 +1,18 @@
+.header-container {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.search-input {
+    border: 1px solid #ccc;
+}
+
+.notification-icon {
+    cursor: pointer;
+    color: #555;
+}
+
+.user-avatar {
+    cursor: pointer;
+}
