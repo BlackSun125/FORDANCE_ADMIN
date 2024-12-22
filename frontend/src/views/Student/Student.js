@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import Header from "../../components/Header/Header";
 import AdminTable from "../../components/Table/Table";
 
 const Student = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const handleToggleSidebar = () => {
-        setIsSidebarOpen((prev) => !prev); // Đảo ngược trạng thái Sidebar
-    };
-
     const columns = [
         { field: "no", headerName: "No" },
         { field: "name", headerName: "Name" },

@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Header from "../components/Header/Header";
 import Dashboard from "../views/Dashboard/Dashboard";
 import Student from "../views/Student/Student";
 import Classes from "../views/Classes/Classes";

@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import AdminTable from "../../components/Table/Table";
 
 const Sessions = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const handleToggleSidebar = () => {
-        setIsSidebarOpen((prev) => !prev); // Đảo ngược trạng thái Sidebar
-    };
-
     const columns = [
         { field: "no", headerName: "No" },
         { field: "name", headerName: "Name" },
