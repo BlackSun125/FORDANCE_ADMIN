@@ -1,34 +1,65 @@
 import React from "react";
-import { FaBars, FaBell } from "react-icons/fa"; // Thư viện icon
-import "./Header.css";
+import { FaBars, FaBell } from "react-icons/fa";
 
-const Header = ({ onToggleSidebar }) => {
+// Header component
+const Header = ({ toggleSidebar }) => {
     return (
-        <div className="header-container flex items-center justify-between bg-blue-200 px-4 py-2 shadow-md">
-            {/* Menu Icon */}
-            <button className="menu-icon" onClick={onToggleSidebar}>
+        <header className="flex items-center justify-between bg-blue-500 px-4 py-3 text-white shadow-md h-16">
+            {/* Sidebar Toggle Button */}
+            <button
+                onClick={toggleSidebar}
+                aria-label="Toggle Sidebar"
+                className="focus:outline-none"
+            >
                 <FaBars size={20} />
             </button>
 
             {/* Search Bar */}
-            <div className="search-bar flex-1 mx-4">
-                <input
-                    type="text"
-                    className="search-input w-full px-3 py-2 rounded-md"
-                    placeholder="Search for data"
-                />
+            <div className="hidden md:flex flex-1 mx-4">
+                <SearchBar />
             </div>
 
-            {/* Notification & Avatar */}
-            <div className="header-icons flex items-center space-x-4">
-                <FaBell size={20} className="notification-icon" />
-                <img
-                    src="https://via.placeholder.com/40"
-                    alt="User Avatar"
-                    className="user-avatar rounded-full w-10 h-10"
-                />
+            {/* Notifications and Avatar */}
+            <div className="flex items-center space-x-4">
+                <Notifications />
+                <Avatar />
             </div>
-        </div>
+        </header>
+    );
+};
+
+// Search Bar Component
+const SearchBar = () => {
+    return (
+        <input
+            type="text"
+            className="w-full px-4 py-2 rounded-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            placeholder="Search for data"
+        />
+    );
+};
+
+// Notifications Component
+const Notifications = () => {
+    return (
+        <button
+            aria-label="Notifications"
+            className="relative focus:outline-none"
+        >
+            <FaBell size={20} />
+            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+        </button>
+    );
+};
+
+// Avatar Component
+const Avatar = () => {
+    return (
+        <img
+            src="https://via.placeholder.com/40"
+            alt="User Avatar"
+            className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+        />
     );
 };
 

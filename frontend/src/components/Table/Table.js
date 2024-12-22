@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Table,
     TableBody,
@@ -9,12 +9,14 @@ import {
     Paper,
     IconButton,
     TablePagination,
+    TextField,
 } from "@mui/material";
 import { Edit, Delete, Lock, Check, Close } from "@mui/icons-material";
 
 const AdminTable = ({ rows, columns, actions }) => {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -25,8 +27,27 @@ const AdminTable = ({ rows, columns, actions }) => {
         setPage(0);
     };
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value.toLowerCase());
+        setPage(0);
+    };
+
+    const filteredRows = rows.filter((row) =>
+        columns.some((column) => {
+            const cellValue = row[column.field]?.toString().toLowerCase();
+            return cellValue?.includes(searchQuery);
+        })
+    );
+
     return (
         <Paper>
+            <TextField
+                label="Search"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                onChange={handleSearchChange}
+            />
             <TableContainer>
                 <Table>
                     <TableHead>
@@ -38,7 +59,7 @@ const AdminTable = ({ rows, columns, actions }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows
+                        {filteredRows
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, index) => (
                                 <TableRow key={index}>
@@ -82,7 +103,7 @@ const AdminTable = ({ rows, columns, actions }) => {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={rows.length}
+                count={filteredRows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

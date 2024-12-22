@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import AdminTable from "../../components/Table/Table";
 
-const Dashboard = () => {
+const Comments = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const handleToggleSidebar = () => {
@@ -29,14 +29,10 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-page flex">
-            {/* Sidebar */}
-            {/* {isSidebarOpen && <Sidebar onToggleSidebar={handleToggleSidebar} />} */}
-
             {/* Main Content */}
             <div className="flex-1 transition-all duration-300 pl-0 ">
-                <Header onToggleSidebar={handleToggleSidebar} />
                 <div className="p-6">
-                    <h1 className="text-3xl font-bold">Welcome to Admin Dashboard</h1>
+                    <h1 className="text-3xl font-bold">Welcome to Comments</h1>
                     <AdminTable rows={rows} columns={columns} actions={actions} />;
                 </div>
 
@@ -45,4 +41,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Comments;
