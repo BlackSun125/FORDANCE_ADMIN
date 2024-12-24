@@ -34,7 +34,6 @@ const Dashboard = () => {
 
             {/* Main Content */}
             <div className="flex-1 transition-all duration-300 pl-0 ">
-                <Header onToggleSidebar={handleToggleSidebar} />
                 <div className="p-6">
                     <h1 className="text-3xl font-bold">Welcome to Admin Dashboard</h1>
                     <AdminTable rows={rows} columns={columns} actions={actions} />;

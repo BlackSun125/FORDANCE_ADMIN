@@ -12,6 +12,7 @@ import {
     TextField,
 } from "@mui/material";
 import { Edit, Delete, Lock, Check, Close } from "@mui/icons-material";
+import "./Table.css";
 
 const AdminTable = ({ rows, columns, actions }) => {
     const [page, setPage] = useState(0);
@@ -51,7 +52,7 @@ const AdminTable = ({ rows, columns, actions }) => {
             <TableContainer>
                 <Table>
                     <TableHead>
-                        <TableRow>
+                        <TableRow className="header-row">
                             {columns.map((column) => (
                                 <TableCell key={column.field}>{column.headerName}</TableCell>
                             ))}
@@ -115,22 +116,3 @@ const AdminTable = ({ rows, columns, actions }) => {
 
 export default AdminTable;
 
-// Usage example
-// const columns = [
-//   { field: "no", headerName: "No" },
-//   { field: "name", headerName: "Name" },
-//   { field: "email", headerName: "Email" },
-//   { field: "phone", headerName: "Phone" },
-//   { field: "classes", headerName: "Classes" },
-//   { field: "sessions", headerName: "Sessions" },
-//   { field: "feesPaid", headerName: "Fees Paid" },
-// ];
-
-// const rows = [
-//   { no: 1, name: "Brad Simmons", email: "abc@gmail.com", phone: "+84 12345678", classes: "Class 1, Class 2", sessions: "Session 1, Session 2", feesPaid: 342048 },
-//   // Add more rows as needed
-// ];
-
-// const actions = ["edit", "delete", "lock"];
-
-// <AdminTable rows={rows} columns={columns} actions={actions} />;

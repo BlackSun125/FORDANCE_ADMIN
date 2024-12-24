@@ -1,0 +1,69 @@
+/* Viền tổng thể của bảng */
+.MuiTable-root {
+    border: 1px solid #ddd;
+    /* Viền ngoài của bảng */
+    border-collapse: collapse;
+    /* Gộp viền để trông gọn gàng hơn */
+}
+
+/* Viền các ô trong bảng */
+.MuiTableCell-root {
+    border: 1px solid #ddd;
+    /* Viền giữa các ô */
+    padding: 12px;
+    /* Khoảng cách bên trong ô */
+}
+
+/* Khoảng cách dòng */
+.MuiTableRow-root {
+    height: 50px;
+    /* Chiều cao dòng */
+}
+
+/* Nền và viền hàng đầu tiên (Header Row) */
+.header-row {
+    background-color: #f0f0f0;
+    /* Màu nền nhạt */
+    font-weight: bold;
+    /* Chữ đậm */
+    font-size: 16px;
+    /* Kích thước chữ */
+    border-bottom: 2px solid #ccc;
+    /* Viền dày hơn để phân cách với nội dung */
+}
+
+/* Nền khi hover qua các hàng */
+.MuiTableRow-root:hover {
+    background-color: #f9f9f9;
+    /* Thay đổi màu nền khi hover */
+}
+
+/* Căn giữa nội dung các ô */
+.MuiTableCell-root {
+    text-align: center;
+    /* Canh giữa */
+}
+
+/* Viền pagination */
+.MuiTablePagination-root {
+    border-top: 1px solid #ddd;
+    /* Viền phân cách pagination với bảng */
+}
+
+
+.header-row {
+    background-color: #f0f0f0;
+    /* Màu nền nhạt */
+    font-weight: bold;
+    /* Chữ đậm */
+    font-size: 16px;
+    /* Kích thước chữ */
+}
+
+.header-row .MuiTableCell-root {
+    color: #333;
+    /* Màu chữ đậm */
+    padding: 12px;
+    text-align: left;
+    /* Canh trái */
+}
