@@ -1,51 +1,121 @@
-import React, { useState, useEffect } from "react";
-import { fetchPaginatedData } from "../../api/instructor/instructorApi";
+import React from "react";
 
-export default function Pagination(data, setData) {
+export default function Pagination({
+  // data,
+  // setData,
+  // dataItems,
+  totalRows,
+  itemsPerPage,
+  onPageChange,
+  currentPage, 
+  // totalPages, 
+}) {
   // const [data, setData] = useState([]);
+  // Number of items per page
+  // const itemsPerPage = 10;
 
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const itemsPerPage = 10; // Number of items per page
+  console.log(totalRows + " total");
+  const totalPages = Math.ceil(totalRows / itemsPerPage);
+  const pageNumbers = [];
 
-  // Logic to slice the data array based on the current page
-  const indexOfLastItem = (page + 1) * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { items, count } = await fetchPaginatedData(page, itemsPerPage);
-      setData(items);
+  //current page
+  // const [page, setPage] = useState(1);
 
-      // Calculate total pages
-      const totalPages = Math.ceil(count / itemsPerPage);
-      setTotalPages(totalPages);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { items, count } = await instructor.fetchPaginatedData(
+  //       page,
+  //       itemsPerPage
+  //     );
+  //     setData(items);
 
-    fetchData();
-  }, [page]);
+  //     // Calculate total pages
+  //   };
+
+  //   fetchData();
+  // }, [page]);
 
   const handlePrevPage = () => {
-    if (page > 0) {
-      setPage(page - 1);
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
-    setPage(page + 1);
+    onPageChange(currentPage + 1);
+  };
+
+  const handleClick = (page) => {
+    onPageChange(page);
   };
 
   return (
     <div className="join float-right">
-      <button className="join-item btn" onClick={handlePrevPage}>
+      <button className="join-item btn" onClick={onPageChange(1)}>
         «
       </button>
-      <button className="join-item btn">1</button>
-      <button className="join-item btn">2</button>
-      <button className="join-item btn">3</button>
-      <button className="join-item btn">4</button>
+
+      <button className="join-item btn" onClick={handlePrevPage}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M15 6L9 12L15 18" stroke="#33363F" stroke-width="2" />
+        </svg>
+      </button>
+      {pageNumbers.map((number) => {
+        if (number === currentPage) {
+          return (
+            <button
+              className="join-item btn"
+              key={number}
+              onClick={() => handleClick(number)}
+            >
+              <strong>{number}</strong>
+            </button>
+          );
+        } else if (
+          number === 1 ||
+          number === totalPages ||
+          (number >= currentPage - 2 && number <= currentPage + 2)
+        ) {
+          return (
+            <button
+              className="join-item btn"
+              key={number}
+              onClick={() => handleClick(number)}
+            >
+              {number}
+            </button>
+          );
+        } else if (number === currentPage - 3 || number === currentPage + 3) {
+          return (
+            <button className="join-item btn" key={number}>
+              ...
+            </button>
+          );
+        }
+        return null;
+      })}
       <button className="join-item btn" onClick={handleNextPage}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M9 6L15 12L9 18" stroke="#33363F" stroke-width="2" />
+        </svg>
+      </button>
+      <button className="join-item btn" onClick={onPageChange(totalPages)}>
         »
       </button>
     </div>

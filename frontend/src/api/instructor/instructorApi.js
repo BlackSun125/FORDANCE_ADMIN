@@ -1,4 +1,4 @@
-import { supabase } from "../../global-variables/supabase"; 
+import { supabase } from "../../global-variables/supabase";
 
 async function GetListInstructors(username) {
   const res = await supabase
@@ -17,9 +17,12 @@ async function fetchPaginatedData(page, perPage) {
     error,
   } = await supabase
     .from("users")
-    .range(page * perPage, (page + 1) * perPage - 1)
-    .select("*", { count: "exact" });
-
+    .select(
+      "*, classes(id, class_name),sessions!sessions_instructor_id_fkey(id, session_name)",
+      { count: "exact" }
+    )
+    .eq("role", "instructor")
+    .range(page * perPage, (page + 1) * perPage - 1);
   if (error) {
     console.error("Error fetching data:", error.message);
   }
@@ -27,4 +30,4 @@ async function fetchPaginatedData(page, perPage) {
   return { items, count };
 }
 
-export const instructor = { GetListInstructors , fetchPaginatedData};
+export const instructor = { GetListInstructors, fetchPaginatedData };

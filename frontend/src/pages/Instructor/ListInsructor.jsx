@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { instructor } from "../../api/instructor/instructorApi";
 import BtnAction from "./Components/ButtonAction";
+import Pagination from "./Components/Pagination";
+import { itemsPerPage } from "../../global-variables/commonVariable";
 
 export default function ListInstructorPage() {
   const [instructors, setInstructors] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const [totalRows, setTotalRows] = useState(0);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  const fetchData = async () => {
+    try {
+      const { items, count } = await instructor.fetchPaginatedData(
+        currentPage,
+        itemsPerPage
+      );
+      console.log("info: " + JSON.stringify(items));
+      setInstructors(items);
+      setTotalRows(count);
+    } catch (error) {
+      alert("Error fetching data:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const infoPromise = await instructor.GetListInstructors();
-        console.log("info: " + JSON.stringify(infoPromise));
-        setInstructors(infoPromise);
-      } catch (error) {
-        alert("Error fetching data:", error);
-      }
-    };
-
     fetchData();
-  }, []);
+    console.log("use effect");
+  }, [currentPage]);
 
   return (
     <div>
@@ -65,20 +77,24 @@ export default function ListInstructorPage() {
                   <td>{instructor.email}</td>
                   <td>{instructor.phone}</td>
                   <td>
-                    {instructor.classes.map((item) => (
-                      <span key={item.id}>
-                        {item.class_name}
-                        <br />
-                      </span>
-                    ))}
+                    {instructor.classes && instructor.classes.length > 0
+                      ? instructor.classes.map((item) => (
+                          <span key={item.id}>
+                            {item.class_name}
+                            <br />
+                          </span>
+                        ))
+                      : null}
                   </td>
                   <td>
-                    {instructor.sessions.map((item) => (
-                      <span key={item.id}>
-                        {item.session_name}
-                        <br />
-                      </span>
-                    ))}
+                    {instructor.sessions && instructor.sessions.length > 0
+                      ? instructor.sessions.map((item) => (
+                          <span key={item.id}>
+                            {item.session_name}
+                            <br />
+                          </span>
+                        ))
+                      : null}
                   </td>
                   <td>
                     <BtnAction></BtnAction>
@@ -87,6 +103,12 @@ export default function ListInstructorPage() {
               ))}
             </tbody>
           </table>
+          <Pagination
+            totalRows={totalRows}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          ></Pagination>
         </div>
       </div>
     </div>
