@@ -1,44 +1,20 @@
 import React from "react";
 
-export default function Pagination({
-  // data,
-  // setData,
-  // dataItems,
+export default function Pagination({ 
   totalRows,
   itemsPerPage,
   onPageChange,
   currentPage, 
-  // totalPages, 
-}) {
-  // const [data, setData] = useState([]);
-  // Number of items per page
-  // const itemsPerPage = 10;
+}) { 
 
-  console.log(totalRows + " total");
+  console.log(totalRows + " total, it in pagination");
   const totalPages = Math.ceil(totalRows / itemsPerPage);
   const pageNumbers = [];
 
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-
-  //current page
-  // const [page, setPage] = useState(1);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const { items, count } = await instructor.fetchPaginatedData(
-  //       page,
-  //       itemsPerPage
-  //     );
-  //     setData(items);
-
-  //     // Calculate total pages
-  //   };
-
-  //   fetchData();
-  // }, [page]);
-
+  
   const handlePrevPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -46,7 +22,7 @@ export default function Pagination({
   };
 
   const handleNextPage = () => {
-    onPageChange(currentPage + 1);
+    if (currentPage < totalPages) onPageChange(currentPage + 1);
   };
 
   const handleClick = (page) => {
@@ -55,7 +31,12 @@ export default function Pagination({
 
   return (
     <div className="join float-right">
-      <button className="join-item btn" onClick={onPageChange(1)}>
+      <button
+        className="join-item btn"
+        onClick={() => {
+          onPageChange(1);
+        }}
+      >
         «
       </button>
 
@@ -74,7 +55,7 @@ export default function Pagination({
         if (number === currentPage) {
           return (
             <button
-              className="join-item btn"
+              className="join-item btn btn-active"
               key={number}
               onClick={() => handleClick(number)}
             >
@@ -115,7 +96,12 @@ export default function Pagination({
           <path d="M9 6L15 12L9 18" stroke="#33363F" stroke-width="2" />
         </svg>
       </button>
-      <button className="join-item btn" onClick={onPageChange(totalPages)}>
+      <button
+        className="join-item btn"
+        onClick={() => {
+          onPageChange(totalPages);
+        }}
+      >
         »
       </button>
     </div>

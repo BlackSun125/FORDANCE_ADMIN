@@ -13,20 +13,24 @@ export default function ListInstructorPage() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  const fetchData = async () => {
-    try {
-      const { items, count } = await instructor.fetchPaginatedData(
-        currentPage,
-        itemsPerPage
-      );
-      console.log("info: " + JSON.stringify(items));
-      setInstructors(items);
-      setTotalRows(count);
-    } catch (error) {
-      alert("Error fetching data:", error);
-    }
-  };
+
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { items, count } = await instructor.fetchPaginatedData(
+          currentPage,
+          itemsPerPage
+        );
+        console.log(
+          "info in fetch function in list page: " + JSON.stringify(items)
+        );
+        setInstructors(items);
+        setTotalRows(count);
+      } catch (error) {
+        alert("Error fetching data:", error);
+      }
+    };
+
     fetchData();
     console.log("use effect");
   }, [currentPage]);
@@ -72,7 +76,7 @@ export default function ListInstructorPage() {
             <tbody>
               {instructors.map((instructor, index) => (
                 <tr key={instructor.id}>
-                  <td>{index + 1}</td>
+                  <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
                   <td>{instructor.name}</td>
                   <td>{instructor.email}</td>
                   <td>{instructor.phone}</td>

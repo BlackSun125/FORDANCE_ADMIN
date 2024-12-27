@@ -22,7 +22,7 @@ async function fetchPaginatedData(page, perPage) {
       { count: "exact" }
     )
     .eq("role", "instructor")
-    .range(page * perPage, (page + 1) * perPage - 1);
+    .range((page - 1) * perPage, page * perPage - 1);
   if (error) {
     console.error("Error fetching data:", error.message);
   }
