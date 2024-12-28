@@ -20,10 +20,7 @@ export default function ListInstructorPage() {
         const { items, count } = await instructor.fetchPaginatedData(
           currentPage,
           itemsPerPage
-        );
-        console.log(
-          "info in fetch function in list page: " + JSON.stringify(items)
-        );
+        ); 
         setInstructors(items);
         setTotalRows(count);
       } catch (error) {
@@ -31,8 +28,7 @@ export default function ListInstructorPage() {
       }
     };
 
-    fetchData();
-    console.log("use effect");
+    fetchData(); 
   }, [currentPage]);
 
   return (

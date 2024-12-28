@@ -1,12 +1,275 @@
-import * as React from 'react';
-import { useAllPayment } from '../../api/payment/api';
-export default function IncomeReportPage()
-{
-    const payments = useAllPayment();
-    console.log({payments});
- return (
-        <div>
-        IncomeReport Page
+import React, { useState, useCallback } from "react";
+import { useAllPayment } from "../../api/payment/api";
+import SearchBar from "./SearchBar";
+// import DateSelect from "./DateSelect";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  PieChart,
+  Pie,
+  Sector,
+  ResponsiveContainer,
+} from "recharts";
+
+const data = [
+  {
+    name: "Page A",
+    uv: 4000,
+    pv: 2400,
+    amt: 2400,
+  },
+  {
+    name: "Page B",
+    uv: 3000,
+    pv: 1398,
+    amt: 2210,
+  },
+  {
+    name: "Page C",
+    uv: 2000,
+    pv: 9800,
+    amt: 2290,
+  },
+  {
+    name: "Page D",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Page E",
+    uv: 1890,
+    pv: 4800,
+    amt: 2181,
+  },
+  {
+    name: "Page F",
+    uv: 2390,
+    pv: 3800,
+    amt: 2500,
+  },
+  {
+    name: "Page G",
+    uv: 3490,
+    pv: 4300,
+    amt: 2100,
+  },
+];
+
+const dataForPie = [
+  { name: "App", value: 400 },
+  { name: "Instructors", value: 300 },
+];
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
+const renderActiveShape = (props) => {
+  const RADIAN = Math.PI / 180;
+  const {
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    value,
+  } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? "start" : "end";
+
+  return (
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+        {payload.name}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill}
+        fill="none"
+      />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        textAnchor={textAnchor}
+        fill="#333"
+      >{`PV ${value}`}</text>
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        dy={18}
+        textAnchor={textAnchor}
+        fill="#999"
+      >
+        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+      </text>
+    </g>
+  );
+};
+
+export default function IncomeReportPage() {
+  const [total, setTotal] = useState(1021);
+  //   const [part1, setPartOne] = useState(0);
+  //   const [part2, setPartTwo] = useState(0);
+
+  const payments = useAllPayment();
+  console.log({ payments });
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    // Implement filtering/searching logic here based on the value
+  };
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const onPieEnter = useCallback(
+    (_, index) => {
+      setActiveIndex(index);
+    },
+    [setActiveIndex]
+  );
+
+  return (
+    <div className="max-w-full overflow-hidden px-11 py-14 flex flex-col gap-8 box-border">
+      <div className="flex flex-row gap-8">
+        <div className="bg-white hover:bg-app-primary-color flex flex-col gap-3 p-6 basis-1/3 justify-center items-start drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl w-[281px] h-[136px]">
+          <p className="font-normal text-xl">Total Income</p>
+          <p className="font-medium text-4xl">{total}</p>
         </div>
-    );
+        <div className="bg-white hover:bg-app-primary-color flex flex-col gap-3 p-6 basis-1/3 justify-center items-start drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl w-[281px] h-[136px]">
+          <p className="font-normal text-xl">App Revenue</p>
+          <p className="font-medium text-4xl">{total}</p>
+        </div>
+        <div className="bg-white hover:bg-app-primary-color flex flex-col gap-3 p-6 basis-1/3 justify-center items-start drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-2xl w-[281px] h-[136px]">
+          <p className="font-normal text-xl">Pay For Instructors</p>
+          <p className="font-medium text-4xl">{total}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-2">
+        <SearchBar handleSearch={handleSearch} />
+        {/* <DateSelect handleDateSelect={null}></DateSelect> */}
+      </div>
+      <div className="w-full">
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Total</th>
+              <th>App</th>
+              <th>Instructor</th>
+              <th>Trade Discount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* row 1 */}
+            <tr className="bg-base-200">
+              <th>1</th>
+              <td>Cy Ganderton</td>
+              <td>Quality Control Specialist</td>
+              <td>Blue</td>
+            </tr>
+            {/* row 2 */}
+            <tr>
+              <th>2</th>
+              <td>Hart Hagerty</td>
+              <td>Desktop Support Technician</td>
+              <td>Purple</td>
+            </tr>
+            {/* row 3 */}
+            <tr>
+              <th>3</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+              <td>Red</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="grid grid-cols-2 w-full">
+        <div className="w-full flex flex-col gap-5 justify-center items-center">
+          <p className="font-normal text-2xl font-roboto">
+            Total income over recent months
+          </p>
+          <AreaChart
+            width={500}
+            height={400}
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="pv"
+              stackId="1"
+              stroke="#82ca9d"
+              fill="#82ca9d"
+            />
+          </AreaChart>
+        </div>
+
+        <div className="w-full flex flex-col gap-5 justify-center items-center">
+          <p className="font-normal text-2xl font-roboto">
+            Percentage of revenue this month
+          </p>
+          <PieChart width={600} height={400}>
+            <Pie
+              activeIndex={activeIndex}
+              activeShape={renderActiveShape}
+              data={dataForPie}
+              innerRadius={100}
+              outerRadius={150}
+              fill="#8884d8"
+              dataKey="value"
+              onMouseEnter={onPieEnter}
+            />
+          </PieChart>
+        </div>
+      </div>
+    </div>
+  );
 }

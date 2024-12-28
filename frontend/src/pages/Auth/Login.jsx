@@ -1,8 +1,6 @@
 import * as React from "react";
 import bgImg from "../../assets/img/bgImg.jpg";
-import { login } from "../../api/auth/loginApi";
-
-import { supabase } from "../../global-variables/supabase";
+import { login } from "../../api/auth/loginApi"; 
 
 export default function LoginPage() {
   const bcrypt = require("bcryptjs");
