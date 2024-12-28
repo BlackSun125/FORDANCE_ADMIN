@@ -6,8 +6,7 @@ export default function Pagination({
   onPageChange,
   currentPage, 
 }) { 
-
-  console.log(totalRows + " total, it in pagination");
+ 
   const totalPages = Math.ceil(totalRows / itemsPerPage);
   const pageNumbers = [];
 

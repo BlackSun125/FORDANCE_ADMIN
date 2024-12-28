@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import daisyui from "daisyui";
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}","./node_modules/react-tailwindcss-datepicker/dist/index.esm.{js,ts}",],
   theme: {
     extend: {
       fontFamily: {
@@ -15,5 +15,5 @@ module.exports = {
       },
     },
   },
-  plugins: [daisyui],
+  plugins: [daisyui,require("tailgrids/plugin")],
 };

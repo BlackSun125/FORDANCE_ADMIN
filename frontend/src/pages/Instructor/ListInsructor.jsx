@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { instructor } from "../../api/instructor/instructorApi";
 import BtnAction from "./Components/ButtonAction";
-import Pagination from "./Components/Pagination";
+import Pagination from "../../components/Pagination";
 import { itemsPerPage } from "../../global-variables/commonVariable";
 
 export default function ListInstructorPage() {

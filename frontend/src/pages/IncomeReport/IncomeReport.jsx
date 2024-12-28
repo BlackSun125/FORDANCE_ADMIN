@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useAllPayment } from "../../api/payment/api";
 import SearchBar from "./SearchBar";
-// import DateSelect from "./DateSelect";
+import DatePickerRange from "./DateSelect";
 import {
   AreaChart,
   Area,
@@ -12,9 +12,11 @@ import {
   PieChart,
   Pie,
   Sector,
-  ResponsiveContainer,
 } from "recharts";
+import { paymentServices } from "../../api/payment/services";
+import Pagination from "../../components/Pagination";
 
+//#region
 const data = [
   {
     name: "Page A",
@@ -64,8 +66,6 @@ const dataForPie = [
   { name: "App", value: 400 },
   { name: "Instructors", value: 300 },
 ];
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -140,15 +140,14 @@ const renderActiveShape = (props) => {
   );
 };
 
+//#endregion
+
 export default function IncomeReportPage() {
   const [total, setTotal] = useState(1021);
   //   const [part1, setPartOne] = useState(0);
   //   const [part2, setPartTwo] = useState(0);
-
-  const payments = useAllPayment();
-  console.log({ payments });
-
   const [searchTerm, setSearchTerm] = useState("");
+  const [dataTable, setDataTable] = useState([]);
 
   const handleSearch = (value) => {
     setSearchTerm(value);
@@ -162,6 +161,41 @@ export default function IncomeReportPage() {
     },
     [setActiveIndex]
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { error, data } =
+          await paymentServices.GetPaymentTableRefInstructor(
+            new Date(2024, 11, 1, 0, 0, 0),
+            new Date(2024, 11, 31, 0, 0, 0)
+          );
+
+        setDataTable(data);
+        console.log({ data });
+      } catch (error) {
+        alert("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const totalMoneyOfApp = 0;
+  const totalMoneyOfIns = 0;
+  // dataTable.map((row) => {
+  //   // totalMoneyOfApp += row.amount;
+  //   totalMoneyOfIns += row.totalPaidForInstructor;
+  // });
+
+  const handlePaidClick = async (ins_id, amount) => {
+    await paymentServices.PaidForInstructor(
+      ins_id,
+      amount,
+      new Date(2024, 11, 1, 0, 0, 0),
+      new Date(2024, 11, 31, 0, 0, 0)
+    );
+  };
 
   return (
     <div className="max-w-full overflow-hidden px-11 py-14 flex flex-col gap-8 box-border">
@@ -179,9 +213,14 @@ export default function IncomeReportPage() {
           <p className="font-medium text-4xl">{total}</p>
         </div>
       </div>
-      <div className="grid grid-cols-2">
+      <div className="flex flex-col">
         <SearchBar handleSearch={handleSearch} />
-        {/* <DateSelect handleDateSelect={null}></DateSelect> */}
+        <DatePickerRange></DatePickerRange>
+        {/* <Datepicker
+          value={value}
+          onChange={(newValue) => setValue(newValue)}
+          showShortcuts={true}
+        /> */}
       </div>
       <div className="w-full">
         <table className="table">
@@ -189,38 +228,38 @@ export default function IncomeReportPage() {
           <thead>
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Total</th>
-              <th>App</th>
-              <th>Instructor</th>
+              <th>Name Instructor</th>
               <th>Trade Discount</th>
-              <th>Status</th>
+              <th>Total Payment</th>
+              <th>Commission</th>
+              <th>Instructor Payment</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
-            <tr className="bg-base-200">
-              <th>1</th>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td>Blue</td>
-            </tr>
-            {/* row 2 */}
-            <tr>
-              <th>2</th>
-              <td>Hart Hagerty</td>
-              <td>Desktop Support Technician</td>
-              <td>Purple</td>
-            </tr>
-            {/* row 3 */}
-            <tr>
-              <th>3</th>
-              <td>Brice Swyre</td>
-              <td>Tax Accountant</td>
-              <td>Red</td>
-            </tr>
+            {dataTable.map((row, i) => (
+              <tr key={row.id}>
+                <td>{i}</td>
+                <td>{row.name}</td>
+                <td>{row.trade_discount}</td>
+                <td>{row.amount}</td>
+                <td>{row.amount * row.trade_discount}</td>
+                <td>{row.totalPaidForInstructor}</td>
+                <td>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      handlePaidClick(row.id, row.amount * row.trade_discount);
+                    }}
+                  >
+                    Paid
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+        {/* <Pagination></Pagination> */}
       </div>
       <div className="grid grid-cols-2 w-full">
         <div className="w-full flex flex-col gap-5 justify-center items-center">
@@ -260,7 +299,10 @@ export default function IncomeReportPage() {
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
-              data={dataForPie}
+              data={[
+                { name: "App", value: 400 },
+                { name: "Instructors", value: 0 },
+              ]}
               innerRadius={100}
               outerRadius={150}
               fill="#8884d8"

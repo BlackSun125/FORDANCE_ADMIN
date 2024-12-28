@@ -27,8 +27,7 @@ export default function LoginPage() {
         //if the passwords do not match
         if (doesPasswordMatch) return alert("it ok");
         if (!doesPasswordMatch) return alert("Password not match!");
-
-        console.log(info);
+ 
       })
       .catch((error) => {
         alert("Error fetching data:", error);
