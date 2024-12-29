@@ -32,7 +32,30 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Điều chỉnh cho sidebar và main content */
+/* Bố cục chính */
+.flex {
+  display: flex;
+}
+
+/* Main content */
+.main-content {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Khi sidebar mở */
+.sidebar-open .main-content {
+  margin-left: 16rem;
+  /* 16rem tương đương 64 Tailwind */
+}
+
+/* Khi sidebar đóng */
+.sidebar-closed .main-content {
+  margin-left: 0;
 }
