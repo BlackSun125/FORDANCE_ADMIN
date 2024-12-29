@@ -14,7 +14,7 @@ import {
 import { Edit, Delete, Lock, Check, Close } from "@mui/icons-material";
 import "./Table.css";
 
-const AdminTable = ({ rows, columns, actions }) => {
+const AdminTable = ({ rows, columns, actions, actionHandlers }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +32,14 @@ const AdminTable = ({ rows, columns, actions }) => {
         setSearchQuery(event.target.value.toLowerCase());
         setPage(0);
     };
+
+    const getActionsForStatus = (status) => {
+        if (status === "waiting") {
+            return ["approve", "reject"];
+        }
+        return ["delete"];
+    };
+
 
     const filteredRows = rows.filter((row) =>
         columns.some((column) => {
@@ -56,7 +64,8 @@ const AdminTable = ({ rows, columns, actions }) => {
                             {columns.map((column) => (
                                 <TableCell key={column.field}>{column.headerName}</TableCell>
                             ))}
-                            {actions && <TableCell>Actions</TableCell>}
+                            {/* Luôn hiển thị cột Actions nếu có hành động được truyền từ hàng */}
+                            <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -67,35 +76,41 @@ const AdminTable = ({ rows, columns, actions }) => {
                                     {columns.map((column) => (
                                         <TableCell key={column.field}>{row[column.field]}</TableCell>
                                     ))}
-                                    {actions && (
-                                        <TableCell>
-                                            {actions.includes("edit") && (
-                                                <IconButton onClick={() => console.log("Edit", row)}>
-                                                    <Edit />
+                                    {/* Chỉ render actions nếu có trạng thái phù hợp */}
+                                    <TableCell>
+                                        {getActionsForStatus(row.status).map((action) => {
+                                            let IconComponent;
+
+                                            switch (action) {
+                                                case "edit":
+                                                    IconComponent = <Edit />;
+                                                    break;
+                                                case "delete":
+                                                    IconComponent = <Delete />;
+                                                    break;
+                                                case "approve":
+                                                    IconComponent = <Check />;
+                                                    break;
+                                                case "reject":
+                                                    IconComponent = <Close />;
+                                                    break;
+                                                default:
+                                                    return null;
+                                            }
+
+                                            return (
+                                                <IconButton
+                                                    key={action}
+                                                    onClick={() =>
+                                                        actionHandlers?.[action]?.(row) ??
+                                                        console.warn(`No handler for action: ${action}`)
+                                                    }
+                                                >
+                                                    {IconComponent}
                                                 </IconButton>
-                                            )}
-                                            {actions.includes("delete") && (
-                                                <IconButton onClick={() => console.log("Delete", row)}>
-                                                    <Delete />
-                                                </IconButton>
-                                            )}
-                                            {actions.includes("lock") && (
-                                                <IconButton onClick={() => console.log("Lock", row)}>
-                                                    <Lock />
-                                                </IconButton>
-                                            )}
-                                            {actions.includes("approve") && (
-                                                <IconButton onClick={() => console.log("Approve", row)}>
-                                                    <Check />
-                                                </IconButton>
-                                            )}
-                                            {actions.includes("reject") && (
-                                                <IconButton onClick={() => console.log("Reject", row)}>
-                                                    <Close />
-                                                </IconButton>
-                                            )}
-                                        </TableCell>
-                                    )}
+                                            );
+                                        })}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
@@ -115,4 +130,3 @@ const AdminTable = ({ rows, columns, actions }) => {
 };
 
 export default AdminTable;
-
