@@ -161,23 +161,22 @@ export default function IncomeReportPage() {
     },
     [setActiveIndex]
   );
+  const fetchData = async () => {
+    try {
+      const { error, data } =
+        await paymentServices.GetPaymentTableRefInstructor(
+          new Date(2024, 11, 1, 0, 0, 0),
+          new Date(2024, 11, 31, 0, 0, 0)
+        );
+
+      setDataTable(data);
+      console.log({ data });
+    } catch (error) {
+      alert("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { error, data } =
-          await paymentServices.GetPaymentTableRefInstructor(
-            new Date(2024, 11, 1, 0, 0, 0),
-            new Date(2024, 11, 31, 0, 0, 0)
-          );
-
-        setDataTable(data);
-        console.log({ data });
-      } catch (error) {
-        alert("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -243,13 +242,15 @@ export default function IncomeReportPage() {
                 <td>{row.name}</td>
                 <td>{row.trade_discount}</td>
                 <td>{row.amount}</td>
-                <td>{row.amount * row.trade_discount}</td>
+                <td>{row.commission}</td>
                 <td>{row.totalPaidForInstructor}</td>
                 <td>
                   <button
+                    disabled={row.commission === 0}
                     className="btn"
-                    onClick={() => {
-                      handlePaidClick(row.id, row.amount * row.trade_discount);
+                    onClick={async () => {
+                      handlePaidClick(row.id, row.commission);
+                      await fetchData();
                     }}
                   >
                     Paid

@@ -32,7 +32,7 @@ async function GetPaymentTableRefInstructor(startDate, endDate) {
   const res = await supabase
     .from("users")
     .select(
-      "id, name, trade_discount,sessions!sessions_instructor_id_fkey(id, session_name, payments(amount) ), instructor_payments(amount)"
+      "id, name, trade_discount,sessions!sessions_instructor_id_fkey(id, session_name, payments(amount, status) ), instructor_payments(amount)"
     )
     .eq("role", "instructor")
     // .eq("sessions.payments.status", "student_paid")
@@ -52,10 +52,14 @@ async function GetPaymentTableRefInstructor(startDate, endDate) {
   const data = [];
   result.forEach((ins) => {
     let totalPayment = 0;
+    let commission = 0;
     ins.sessions.forEach((session) => {
       if (session.payments) {
         session.payments.forEach((payment) => {
           totalPayment += payment.amount;
+          if (payment.status === "student_paid") {
+            commission += payment.amount;
+          }
         });
       }
     });
@@ -69,8 +73,9 @@ async function GetPaymentTableRefInstructor(startDate, endDate) {
     const res = {
       id: ins.id,
       name: ins.name,
-      trade_discount: ins.trade_discount,
+      trade_discount: ins.trade_discount ?? 0,
       amount: totalPayment,
+      commission: commission * ins.trade_discount,
       totalPaidForInstructor: totalInstructorPayments,
     };
     if (res.amount > 0) data.push(res);
