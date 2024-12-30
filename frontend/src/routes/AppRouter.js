@@ -6,10 +6,12 @@ import Classes from "../views/Classes/Classes";
 import Sessions from "../views/Sessions/Sessions";
 import Comments from "../views/Comments/Comments";
 import MainLayout from "../layouts/MainLayout";
-
+import LoginPage from "../views/Auth/Login";
+import ListInstructorPage from "../views/Instructor/ListInsructor";
+import InstructorDetailPage from "../views/Instructor/InstructorDetail";
+import IncomeReportPage from "../views/IncomeReport/IncomeReport";
 const AppRouter = () => {
     return (
-        <Router>
             <Routes>
                 {/* Sử dụng MainLayout cho tất cả các route */}
                 <Route path="/" element={<Navigate to="/dashboard" />} />
@@ -23,13 +25,19 @@ const AppRouter = () => {
                                 <Route path="/classes" element={<Classes />} />
                                 <Route path="/sessions" element={<Sessions />} />
                                 <Route path="/comments" element={<Comments />} />
+                                <Route index element={<LoginPage />} />
+                                <Route path="income-report" element={<IncomeReportPage />} />
+                                <Route path="instructors" element={<ListInstructorPage />} />
+                                <Route
+                                    path="instructors/:instructorId"
+                                    element={<InstructorDetailPage />}
+                                />
                                 <Route path="*" element={<h1>404 - Page Not Found</h1>} />
                             </Routes>
                         </MainLayout>
                     }
                 />
             </Routes>
-        </Router>
     );
 };
 
