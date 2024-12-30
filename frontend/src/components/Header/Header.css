@@ -1,0 +1,25 @@
+.header-container {
+    height: 64px;
+    /* Chiều cao cố định */
+    position: fixed;
+    /* Luôn ở trên */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    /* Đảm bảo nằm trên các thành phần khác */
+
+}
+
+.search-input {
+    border: 1px solid #ccc;
+}
+
+.notification-icon {
+    cursor: pointer;
+    color: #555;
+}
+
+.user-avatar {
+    cursor: pointer;
+}

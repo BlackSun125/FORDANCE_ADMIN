@@ -1,0 +1,20 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: #fff;
+    transition: transform 0.3s ease, visibility 0.3s ease;
+    transform: translateX(0);
+    /* Vị trí mặc định khi sidebar hiển thị */
+    visibility: visible;
+    /* Hiển thị */
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+    /* Đẩy sidebar ra ngoài màn hình */
+    visibility: hidden;
+    /* Đảm bảo nó bị ẩn sau khi transition */
+}
