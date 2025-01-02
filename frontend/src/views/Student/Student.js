@@ -25,7 +25,7 @@ const Student = () => {
             {/* Main Content */}
             <div className="flex-1 transition-all duration-300 pl-0 ">
                 <div className="p-6">
-                    <h1 className="text-3xl font-bold">Welcome to Students</h1>
+                    <h1 className="text-3xl font-bold">Students Management</h1>
                     <AdminTable rows={rows} columns={columns} actions={actions} />;
                 </div>
 

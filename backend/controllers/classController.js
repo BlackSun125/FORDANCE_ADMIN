@@ -3,7 +3,11 @@ const supabase = require('../config/supabase');
 // Lấy danh sách tất cả các lớp
 const getAllClasses = async (req, res) => {
     try {
-        const { data, error } = await supabase.from('classes').select('*');
+        const { orderBy = 'id', orderDirection = 'desc' } = req.query;
+        const { data, error } = await supabase
+            .from('classes')
+            .select('*')
+            .order(orderBy, { ascending: orderDirection === 'desc' }); // Sử dụng order
         if (error) throw error;
         res.status(200).json(data);
     } catch (error) {

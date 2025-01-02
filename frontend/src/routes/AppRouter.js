@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import Dashboard from "../views/Dashboard/Dashboard";
 import Student from "../views/Student/Student";
 import Classes from "../views/Classes/Classes";
 import Sessions from "../views/Sessions/Sessions";
@@ -20,7 +19,6 @@ const AppRouter = () => {
                 element={
                     <MainLayout>
                         <Routes>
-                            <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/students" element={<Student />} />
                             <Route path="/classes" element={<Classes />} />
                             <Route path="/sessions" element={<Sessions />} />
@@ -31,6 +29,7 @@ const AppRouter = () => {
                                 path="/instructors/:instructorId"
                                 element={<InstructorDetailPage />}
                             />
+                            <Route path="/report" element={<IncomeReportPage />}></Route>
                             <Route path="*" element={<h1>404 - Page Not Found</h1>} />
                         </Routes>
                     </MainLayout>

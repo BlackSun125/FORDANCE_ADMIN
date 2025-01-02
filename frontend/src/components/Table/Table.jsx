@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     Table,
     TableBody,
@@ -11,13 +11,14 @@ import {
     TablePagination,
     TextField,
 } from "@mui/material";
-import { Edit, Delete, Lock, Check, Close } from "@mui/icons-material";
-import "./Table.css";
+import { Edit, Delete, Check, Close } from "@mui/icons-material";
 
 const AdminTable = ({ rows, columns, actions, actionHandlers }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
+    const [maxHeight, setMaxHeight] = useState(500); // Giá trị mặc định
+    const containerRef = useRef(null);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -35,11 +36,10 @@ const AdminTable = ({ rows, columns, actions, actionHandlers }) => {
 
     const getActionsForStatus = (status) => {
         if (status === "waiting") {
-            return ["approve", "reject"];
+            return ["edit", "approve", "reject"];
         }
-        return ["delete"];
+        return ["edit", "delete"];
     };
-
 
     const filteredRows = rows.filter((row) =>
         columns.some((column) => {
@@ -48,8 +48,23 @@ const AdminTable = ({ rows, columns, actions, actionHandlers }) => {
         })
     );
 
+    useEffect(() => {
+        const updateMaxHeight = () => {
+            if (containerRef.current) {
+                // Tính chiều cao khả dụng dựa trên viewport và phần tử chứa
+                const availableHeight =
+                    window.innerHeight - containerRef.current.getBoundingClientRect().top - 20; // Trừ đi khoảng cách và padding
+                setMaxHeight(availableHeight > 300 ? availableHeight : 300); // Đảm bảo chiều cao tối thiểu là 300px
+            }
+        };
+
+        updateMaxHeight();
+        window.addEventListener("resize", updateMaxHeight); // Cập nhật khi thay đổi kích thước cửa sổ
+        return () => window.removeEventListener("resize", updateMaxHeight);
+    }, []);
+
     return (
-        <Paper>
+        <Paper ref={containerRef} style={{ display: "flex", flexDirection: "column", height: "100%" }}>
             <TextField
                 label="Search"
                 variant="outlined"
@@ -57,14 +72,18 @@ const AdminTable = ({ rows, columns, actions, actionHandlers }) => {
                 margin="normal"
                 onChange={handleSearchChange}
             />
-            <TableContainer>
-                <Table>
+            <TableContainer
+                style={{
+                    maxHeight: `${maxHeight}px`, // Sử dụng maxHeight tính toán được
+                    overflowY: "auto",
+                }}
+            >
+                <Table stickyHeader>
                     <TableHead>
-                        <TableRow className="header-row">
+                        <TableRow>
                             {columns.map((column) => (
                                 <TableCell key={column.field}>{column.headerName}</TableCell>
                             ))}
-                            {/* Luôn hiển thị cột Actions nếu có hành động được truyền từ hàng */}
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -76,7 +95,6 @@ const AdminTable = ({ rows, columns, actions, actionHandlers }) => {
                                     {columns.map((column) => (
                                         <TableCell key={column.field}>{row[column.field]}</TableCell>
                                     ))}
-                                    {/* Chỉ render actions nếu có trạng thái phù hợp */}
                                     <TableCell>
                                         {getActionsForStatus(row.status).map((action) => {
                                             let IconComponent;

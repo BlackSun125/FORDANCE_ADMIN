@@ -15,11 +15,19 @@ const MainLayout = ({ children }) => {
             <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
             {/* Main content */}
-            <div
-                className={`flex-1 transition-all duration-300`}
-            >
+            <div className="flex flex-col flex-1 overflow-hidden">
+                {/* Header */}
                 <Header toggleSidebar={toggleSidebar} />
-                <div className="p-4 overflow-auto">{children}</div>
+
+                {/* Content */}
+                <div
+                    className="flex-1 p-4 overflow-auto"
+                    style={{
+                        maxHeight: "calc(100vh - 64px)",
+                    }}
+                >
+                    {children}
+                </div>
             </div>
         </div>
     );

@@ -16,7 +16,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     const menuItems = [
         { icon: FaUser, label: "Instructors Management", path: "/instructors" },
         { icon: FaGraduationCap, label: "Student Management", path: "/students" },
-        { icon: FaChartBar, label: "Statistic", path: "/statistics" },
+        { icon: FaChartBar, label: "Report", path: "/report" },
         { icon: FaSignOutAlt, label: "Log Out", action: () => handleLogout() },
     ];
 
