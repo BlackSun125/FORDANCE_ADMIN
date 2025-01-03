@@ -7,16 +7,17 @@ import {
     FaAngleDown,
     FaFileAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     const [openDropdown, setOpenDropdown] = useState(false);
     const [activeMenu, setActiveMenu] = useState("");
+    const navigate = useNavigate();
 
     const menuItems = [
         { icon: FaUser, label: "Instructors Management", path: "/instructors" },
         { icon: FaGraduationCap, label: "Student Management", path: "/students" },
-        { icon: FaChartBar, label: "Report", path: "/report" },
+        { icon: FaChartBar, label: "Report", path: "/income-report" },
         { icon: FaSignOutAlt, label: "Log Out", action: () => handleLogout() },
     ];
 
@@ -28,7 +29,11 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
     const handleLogout = () => {
         console.log("User logged out");
-        // Thêm logic đăng xuất tại đây
+        // Xóa token khỏi localStorage hoặc sessionStorage
+        localStorage.removeItem("authToken");
+
+        // Điều hướng về trang login sau khi logout
+        navigate("/login");
     };
 
     return (

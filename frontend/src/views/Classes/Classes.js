@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminTable from "../../components/Table/Table";
 import axios from "axios";
+import Loading from "../../components/Loading/Loading";
 
 const Classes = () => {
     const [rows, setRows] = useState([]);
@@ -33,13 +34,13 @@ const Classes = () => {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     return (
         <div className="flex-1 transition-all duration-300 pl-0 ">
             <div className="p-6">
-                <h1 className="text-3xl font-bold">Welcome to Classes</h1>
+                <h1 className="text-3xl font-bold">Classes Management</h1>
                 <AdminTable rows={rows} columns={columns} actions={actions} />
             </div>
         </div>

@@ -1,0 +1,33 @@
+/* Global style for input fields */
+.input {
+    background-color: #f0f0f0;
+    /* Thay đổi màu nền */
+    color: #333;
+    /* Màu chữ trong input */
+    border: 1px solid #ccc;
+    /* Màu đường viền mặc định */
+}
+
+.input:focus {
+    border-color: #3498db;
+    /* Màu đường viền khi focus */
+    outline: none;
+    /* Tắt outline mặc định */
+}
+
+.input-bordered {
+    padding: 10px;
+    /* Thêm padding cho input */
+    border-radius: 5px;
+    /* Bo tròn góc của input */
+}
+
+.input::placeholder {
+    color: #aaa;
+    /* Màu placeholder */
+}
+
+input[type="password"] {
+    background-color: #fafafa;
+    /* Thay đổi màu nền cho password field */
+}
