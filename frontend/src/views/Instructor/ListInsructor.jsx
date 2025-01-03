@@ -102,7 +102,7 @@ export default function ListInstructorPage() {
                       : null}
                   </td>
                   <td>
-                    <BtnAction></BtnAction>
+                    <BtnAction id={instructor.id}></BtnAction>
                   </td>
                 </tr>
               ))}

@@ -10,6 +10,11 @@ async function GetListInstructors(username) {
   return res.data;
 }
 
+async function GetOneInsById(id) {
+  const res = await supabase.from("users").select("*").eq("id", id);
+  return res.data;
+}
+
 async function fetchPaginatedData(page, perPage) {
   const {
     data: items,
@@ -30,4 +35,8 @@ async function fetchPaginatedData(page, perPage) {
   return { items, count };
 }
 
-export const instructor = { GetListInstructors, fetchPaginatedData };
+export const instructor = {
+  GetListInstructors,
+  fetchPaginatedData,
+  GetOneInsById,
+};
