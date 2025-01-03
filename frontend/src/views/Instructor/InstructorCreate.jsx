@@ -1,6 +1,8 @@
 import * as React from "react";
 import { supabase } from "../../global-variables/supabase";
 import { password } from "../../global-variables/commonVariable";
+import { useNavigate } from "react-router-dom";
+
 
 export default function InstructorCreate() {
   const refInput = React.useRef({});
@@ -8,6 +10,12 @@ export default function InstructorCreate() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     refInput.current[name] = value;
+  };
+
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1); // -1 nghĩa là quay lại trang trước
   };
 
   const handleCreate = async () => {
@@ -79,7 +87,8 @@ export default function InstructorCreate() {
       </div>
 
       <div className="flex justify-center gap-28">
-        <button className="btn bg-white text-gray-400 btn-outline mr-5">
+        <button className="btn bg-white text-gray-400 btn-outline mr-5"
+          onClick={handleGoBack}>
           Cancel
         </button>
         <button

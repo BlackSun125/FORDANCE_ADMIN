@@ -10,7 +10,7 @@ const PrivateRoute = ({ children }) => {
         return <Navigate to="/login" />;
     }
 
-    return children; // Trả về các route con nếu đã đăng nhập
+    return children || <Navigate to="/sesionss" />;
 };
 
 export default PrivateRoute;

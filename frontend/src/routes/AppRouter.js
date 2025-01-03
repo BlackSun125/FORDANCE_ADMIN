@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Student from "../views/Student/Student";
 import Classes from "../views/Classes/Classes";
 import Sessions from "../views/Sessions/Sessions";
@@ -13,40 +13,40 @@ import PrivateRoute from "./PrivateRoutes";
 import InstructorCreate from "../views/Instructor/InstructorCreate";
 
 const AppRouter = () => {
-  return (
-    <Routes>
-      {/* Route đăng nhập */}
-      <Route path="/login" element={<LoginPage />} />
+    return (
+        <Routes>
+            {/* Route công khai */}
+            <Route path="/login" element={<LoginPage />} />
 
-      {/* Route bảo vệ bằng PrivateRoute */}
-      <Route
-        path="*"
-        element={
-          <PrivateRoute>
-            <MainLayout>
-              <Routes>
-                <Route path="/students" element={<Student />} />
-                <Route path="/classes" element={<Classes />} />
-                <Route path="/sessions" element={<Sessions />} />
-                <Route path="/comments" element={<Comments />} />
-                <Route path="/income-report" element={<IncomeReportPage />} />
-                <Route path="/instructors" element={<ListInstructorPage />} />
-                <Route
-                  path="/instructors/create"
-                  element={<InstructorCreate />}
-                />
-                <Route
-                  path="/instructors/:instructorId"
-                  element={<InstructorDetailPage />}
-                />
-                <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-              </Routes>
-            </MainLayout>
-          </PrivateRoute>
-        }
-      />
-    </Routes>
-  );
+            {/* Routes được bảo vệ */}
+            <Route
+                path="*"
+                element={
+                    <PrivateRoute>
+                        <MainLayout>
+                            <Routes>
+                                <Route path="/students" element={<Student />} />
+                                <Route path="/classes" element={<Classes />} />
+                                <Route path="/sessions" element={<Sessions />} />
+                                <Route path="/comments" element={<Comments />} />
+                                <Route path="/income-report" element={<IncomeReportPage />} />
+                                <Route path="/instructors" element={<ListInstructorPage />} />
+                                <Route
+                                    path="/instructors/create"
+                                    element={<InstructorCreate />}
+                                />
+                                <Route
+                                    path="/instructors/:instructorId"
+                                    element={<InstructorDetailPage />}
+                                />
+                                <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+                            </Routes>
+                        </MainLayout>
+                    </PrivateRoute>
+                }
+            />
+        </Routes>
+    );
 };
 
 export default AppRouter;
