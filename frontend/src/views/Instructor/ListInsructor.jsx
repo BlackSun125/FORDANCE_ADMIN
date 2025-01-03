@@ -3,8 +3,10 @@ import { instructor } from "../../api/instructor/instructorApi";
 import BtnAction from "./Components/ButtonAction";
 import Pagination from "../../components/Pagination";
 import { itemsPerPage } from "../../global-variables/commonVariable";
+import { useNavigate } from "react-router";
 
 export default function ListInstructorPage() {
+  const nav = useNavigate();
   const [instructors, setInstructors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -20,7 +22,7 @@ export default function ListInstructorPage() {
         const { items, count } = await instructor.fetchPaginatedData(
           currentPage,
           itemsPerPage
-        ); 
+        );
         setInstructors(items);
         setTotalRows(count);
       } catch (error) {
@@ -28,7 +30,7 @@ export default function ListInstructorPage() {
       }
     };
 
-    fetchData(); 
+    fetchData();
   }, [currentPage]);
 
   return (
@@ -38,7 +40,10 @@ export default function ListInstructorPage() {
           List Instructor Page
         </p>
         <div className="overflow-auto">
-          <button className="btn bg-app-primary-color text-white float-right mr-5">
+          <button
+            className="btn bg-app-primary-color text-white float-right mr-5"
+            onClick={() => nav("/instructors/create")}
+          >
             <svg
               width="24"
               height="24"
