@@ -1,5 +1,6 @@
 import React from "react";
 import { FaBars, FaBell } from "react-icons/fa";
+import avatar from '../../assets/img/149071.png'
 
 // Header component
 const Header = ({ toggleSidebar }) => {
@@ -56,7 +57,7 @@ const Notifications = () => {
 const Avatar = () => {
     return (
         <img
-            src="https://via.placeholder.com/40"
+            src={avatar}
             alt="User Avatar"
             className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
         />
