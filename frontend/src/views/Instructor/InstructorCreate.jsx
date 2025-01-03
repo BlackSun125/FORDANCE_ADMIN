@@ -3,7 +3,6 @@ import { supabase } from "../../global-variables/supabase";
 import { password } from "../../global-variables/commonVariable";
 import { useNavigate } from "react-router-dom";
 
-
 export default function InstructorCreate() {
   const refInput = React.useRef({});
 
@@ -25,6 +24,10 @@ export default function InstructorCreate() {
       options: {
         data: {
           role: "instructor",
+          phone: refInput.current["phone"],
+          username: refInput.current["username"],
+          discount: refInput.current["discount"],
+          name: refInput.current["name"],
         },
       },
     });
@@ -87,8 +90,10 @@ export default function InstructorCreate() {
       </div>
 
       <div className="flex justify-center gap-28">
-        <button className="btn bg-white text-gray-400 btn-outline mr-5"
-          onClick={handleGoBack}>
+        <button
+          className="btn bg-white text-gray-400 btn-outline mr-5"
+          onClick={handleGoBack}
+        >
           Cancel
         </button>
         <button
